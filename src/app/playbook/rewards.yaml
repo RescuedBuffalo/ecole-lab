@@ -1,0 +1,17 @@
+x_post:
+  save_reply: 0.4
+  clicks_to_list: 0.3
+  subs: 0.3
+  penalty_policy: 5
+newsletter:
+  open_uplift: 0.5
+  cto: 0.3
+  subs: 0.2
+  penalty_unsubs: 10
+medium:
+  read_time: 0.6
+  reads_to_end: 0.2
+  follows: 0.2
+tpt:
+  purchases: 1.0
+  saves: 0.3

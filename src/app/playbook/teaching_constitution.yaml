@@ -1,0 +1,13 @@
+rules:
+  - key: learning_goal_present
+    required: true
+  - key: cognitive_progression
+    min: 0.6
+  - key: retrieval_presence
+    min: 1
+  - key: reading_level_max_grade
+    max: 10
+  - key: udl_accessibility
+    min: 0.6
+  - key: claims_softened_or_cited
+    required: true

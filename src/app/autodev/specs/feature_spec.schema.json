@@ -1,0 +1,8 @@
+{ "type":"object","required":["id","goal","user_story","constraints","acceptance_tests"],
+  "properties":{
+    "id":{"type":"string"},
+    "goal":{"type":"string"},
+    "user_story":{"type":"string"},
+    "constraints":{"type":"object"},
+    "acceptance_tests":{"type":"array","items":{"type":"object"}}
+}}
