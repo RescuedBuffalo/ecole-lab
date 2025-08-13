@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ecole
+    ports:
+      - '5432:5432'
+  api:
+    build: .
+    command: uvicorn src.app.main:app --host 0.0.0.0 --port 8000
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - '8000:8000'
+    working_dir: /app

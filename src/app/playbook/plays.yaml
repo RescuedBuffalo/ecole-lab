@@ -1,0 +1,30 @@
+- id: x_hot_take_v1
+  workstream: x_post
+  params: {hook: short}
+- id: x_mini_thread_v1
+  workstream: x_thread
+  params: {bullets: 3}
+- id: newsletter_listicle_v1
+  workstream: newsletter
+  params: {}
+- id: newsletter_story_v1
+  workstream: newsletter
+  params: {}
+- id: medium_short_explainer_v1
+  workstream: medium
+  params: {}
+- id: medium_long_tutorial_v1
+  workstream: medium
+  params: {}
+- id: tpt_worksheet_listing_v1
+  workstream: tpt
+  params: {}
+- id: tpt_rubric_listing_v1
+  workstream: tpt
+  params: {}
+- id: x_carousel_text_v1
+  workstream: x_post
+  params: {}
+- id: faq_micro_post_v1
+  workstream: x_post
+  params: {}

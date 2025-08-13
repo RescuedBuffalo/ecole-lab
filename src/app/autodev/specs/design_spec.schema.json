@@ -1,0 +1,6 @@
+{ "type":"object","required":["endpoints","data_model","stack"],
+  "properties":{
+    "endpoints":{"type":"array","items":{"type":"string"}},
+    "data_model":{"type":"array","items":{"type":"string"}},
+    "stack":{"type":"string"}
+}}

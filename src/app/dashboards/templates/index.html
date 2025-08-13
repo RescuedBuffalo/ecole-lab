@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html><body>
+<h1>Attempts</h1>
+<ul>
+{% for a in attempts %}
+<li><a href="/attempt/{{a.id}}">{{a.id}}</a> - {{a.workstream}} - {{a.play_id}} - {{a.reward_R}}</li>
+{% endfor %}
+</ul>
+</body></html>
