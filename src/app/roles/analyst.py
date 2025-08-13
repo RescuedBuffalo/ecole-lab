@@ -46,7 +46,9 @@ class Analyst:
             play = await session.get(Play, attempt.play_id)
             if play:
                 params = play.params or {}
-                params["reward_sum"] = params.get("reward_sum", 0) + float(attempt.reward_R)
+                params["reward_sum"] = params.get("reward_sum", 0) + float(
+                    attempt.reward_R
+                )
                 params["n"] = params.get("n", 0) + 1
                 play.params = params
         await session.commit()
