@@ -35,3 +35,15 @@ async def attempt_detail(
     return templates.TemplateResponse(
         "attempt.html", {"request": request, "attempt": attempt}
     )
+
+
+@router.get("/m/welcome", response_class=HTMLResponse)
+async def mobile_welcome(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse("mobile_welcome.html", {"request": request})
+
+
+@router.get("/m/session/{session_id}", response_class=HTMLResponse)
+async def mobile_session(session_id: str, request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "mobile_session.html", {"request": request, "session_id": session_id}
+    )

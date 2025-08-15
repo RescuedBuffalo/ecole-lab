@@ -1,0 +1,10 @@
+id: music_stage_v1
+grade_band: 7-9
+sentences_max: 2
+allowed_units: [meters, feet]
+stem: "On a stage, speakers are set {a} {units} apart and a microphone stand is {b} {units} forward at a right angle. What cable length connects them?"
+question: "Determine c, the direct distance from speaker to mic."
+placeholders: [a, b, c, units]
+forbidden_terms: []
+notes:
+  - "No mention of specific artists."

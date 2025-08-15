@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session</title>
+</head>
+<body>
+  <div id="content"></div>
+  <input type="number" id="answer" />
+  <button id="submit">Submit</button>
+  <div id="message"></div>
+  <script>
+    const sessionId = window.location.pathname.split('/').pop();
+    async function load(){
+      const resp = await fetch(`/math/sessions/${sessionId}/next`);
+      const data = await resp.json();
+      if(data.item===null){document.getElementById('content').innerText='Done';return;}
+      window.currentItem=data;
+      document.getElementById('content').innerText=`${data.stem} ${data.question}`;
+    }
+    document.getElementById('submit').addEventListener('click',async()=>{
+      const ans=parseFloat(document.getElementById('answer').value);
+      const resp=await fetch('/math/attempts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({item_id:window.currentItem.item_id,answer_submitted:ans,hints_used:0,retries:0})});
+      const data=await resp.json();
+      document.getElementById('message').innerText=data.correct?"Correct":"Try again";
+      load();
+    });
+    load();
+  </script>
+</body>
+</html>

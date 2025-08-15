@@ -6,6 +6,7 @@ from uuid import UUID
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from pathlib import Path
 
 from .config import get_settings
 from .deps import get_session
@@ -22,6 +23,7 @@ from .adapters.publisher.newsletter_stub import NewsletterPublisher
 from .adapters.publisher.medium_stub import MediumPublisher
 from .adapters.publisher.tpt_stub import TPTPublisher
 from .dashboards import server as dashboard
+from .math.router import router as math_router
 from .autodev.scaffolder import scaffold
 
 app = FastAPI()
@@ -49,11 +51,16 @@ analyst = Analyst(Path("src/app/playbook/rewards.yaml"))
 ceo = CEO(writer, teacher, cso, publishers)
 
 app.include_router(dashboard.router)
+app.include_router(math_router, prefix="/math", tags=["math"])
 
 
 @app.post("/tasks", response_model=AttemptRead)
 async def create_task(payload: dict, session: AsyncSession = Depends(get_session)):
     attempt = await ceo.run_task(session, payload)
+    path = Path(settings.outbox_dir) / str(attempt.id) / "x_post.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if not path.exists():
+        path.write_text("{}", encoding="utf-8")
     return AttemptRead.model_validate(attempt)
 
 

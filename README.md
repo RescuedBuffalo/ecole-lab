@@ -40,3 +40,18 @@ curl -X POST http://localhost:8000/autodev/scaffold \
 poetry install
 poetry run pytest
 ```
+
+## Phase 1 Math Quickstart
+
+```bash
+docker compose up --build
+make seed-math
+```
+
+Open [http://localhost:8000/m/welcome](http://localhost:8000/m/welcome) to start a session.
+
+To run tests:
+
+```bash
+docker compose exec api poetry run pytest -q
+```
