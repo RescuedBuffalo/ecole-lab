@@ -1,6 +1,6 @@
-# ecole-factory
+# ecole-lab
 
-Prototype "3-AI" company that allocates, writes and ships text content.
+Prototype "3-AI" system that allocates, writes and ships text content.
 Everything runs locally with deterministic mocks.
 
 ## Quickstart
