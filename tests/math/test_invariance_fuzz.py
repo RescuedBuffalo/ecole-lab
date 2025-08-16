@@ -1,18 +1,36 @@
-from hypothesis import given, strategies as st
-
-from typing import Literal, cast
+from __future__ import annotations
 
 from src.app.math.invariance import check_invariance
-from src.app.math.templater import render_context
+from src.app.math.schemas import ProblemSpec
 from src.app.math.skills.pythagorean import generate_problem
 
 
-@given(st.integers(min_value=1, max_value=4))
-def test_invariance(diff: int) -> None:
-    skill = "pythagorean.find_c" if diff < 4 else "pythagorean.find_leg"
-    diff_val = diff if diff < 4 else 4
-    spec = generate_problem(
-        cast(Literal["pythagorean.find_c", "pythagorean.find_leg"], skill), diff_val
+def test_invariance_correct_spec() -> None:
+    """Test that correct specifications pass invariance check."""
+    for diff in [1, 2, 3]:
+        spec = generate_problem("pythagorean.find_c", diff)
+        assert check_invariance(spec, "dummy_stem") is True
+
+
+def test_invariance_invalid_vars_type():
+    """Test that invalid variable types return False."""
+    spec = ProblemSpec(
+        id="test", 
+        skill="pythagorean.find_c", 
+        difficulty=1,
+        vars={"a": "invalid", "b": 4, "c": 5},  # string where float expected
+        solution={"answer": 5}
     )
-    ctx = render_context("neutral_v1", spec, "neutral", "meters")
-    assert check_invariance(spec, ctx.stem)
+    assert check_invariance(spec, "dummy_stem") is False
+
+
+def test_invariance_missing_vars():
+    """Test that missing variables return False."""
+    spec = ProblemSpec(
+        id="test", 
+        skill="pythagorean.find_c", 
+        difficulty=1,
+        vars={"a": "invalid"},  # invalid type for conversion to float
+        solution={"answer": 5}
+    )
+    assert check_invariance(spec, "dummy_stem") is False

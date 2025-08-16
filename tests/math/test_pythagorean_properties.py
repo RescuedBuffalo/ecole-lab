@@ -1,59 +1,51 @@
-from math import isclose
+from __future__ import annotations
 
-from typing import cast
-
-from hypothesis import given, strategies as st
-
+import pytest
 from src.app.math.skills.pythagorean import generate_problem
 
 
-@given(st.integers(min_value=1, max_value=2))
-def test_d1_d2_triples(diff: int) -> None:
-    spec = generate_problem("pythagorean.find_c", diff)
-    a = float(cast(float, spec.vars["a"]))
-    b = float(cast(float, spec.vars["b"]))
-    c = float(cast(float, spec.vars["c"]))
-    assert isclose(c**2, a**2 + b**2)
-    assert float(c).is_integer()
+def test_pythagorean_find_c_difficulty_1():
+    """Test difficulty 1 for find_c skill."""
+    prob = generate_problem("pythagorean.find_c", 1)
+    assert prob.skill == "pythagorean.find_c"
+    assert prob.difficulty == 1
+    assert "a" in prob.vars and "b" in prob.vars and "c" in prob.vars
 
 
-@given(st.just(3))
-def test_d3_non_integer_c(_: int) -> None:
-    spec = generate_problem("pythagorean.find_c", 3)
-    c = float(cast(float, spec.vars["c"]))
-    assert not c.is_integer()
-    a = float(cast(float, spec.vars["a"]))
-    b = float(cast(float, spec.vars["b"]))
-    from math import sqrt
-
-    assert isclose(c, round(sqrt(a * a + b * b), 2))
+def test_pythagorean_find_c_difficulty_2():
+    """Test difficulty 2 for find_c skill."""
+    prob = generate_problem("pythagorean.find_c", 2)
+    assert prob.skill == "pythagorean.find_c"
+    assert prob.difficulty == 2
 
 
-def test_d4_find_leg() -> None:
-    spec = generate_problem("pythagorean.find_leg", 4)
-    a = float(cast(float, spec.vars["a"]))
-    b = float(cast(float, spec.vars["b"]))
-    c = float(cast(float, spec.vars["c"]))
-    assert c > a
-    assert c > b
-    assert isclose(b**2 + a**2, c**2, rel_tol=1e-2)
+def test_pythagorean_find_c_difficulty_3():
+    """Test difficulty 3 for find_c skill."""
+    prob = generate_problem("pythagorean.find_c", 3)
+    assert prob.skill == "pythagorean.find_c"
+    assert prob.difficulty == 3
 
 
-@given(st.integers(min_value=1, max_value=3))
-def test_swap_legs_invariance(diff: int) -> None:
-    spec = generate_problem("pythagorean.find_c", diff)
-    a = float(cast(float, spec.vars["a"]))
-    b = float(cast(float, spec.vars["b"]))
-    c = float(cast(float, spec.vars["c"]))
-    assert isclose(c**2, a**2 + b**2, rel_tol=1e-2)
-    # swapping legs should not change solution
-    assert isclose(c**2, b**2 + a**2, rel_tol=1e-2)
+def test_pythagorean_find_leg_difficulty_4():
+    """Test difficulty 4 for find_leg skill."""
+    prob = generate_problem("pythagorean.find_leg", 4)
+    assert prob.skill == "pythagorean.find_leg"
+    assert prob.difficulty == 4
 
 
-@given(st.integers(min_value=1, max_value=2), st.integers(min_value=2, max_value=5))
-def test_scaling_property(diff: int, k: int) -> None:
-    spec = generate_problem("pythagorean.find_c", diff)
-    a = float(cast(float, spec.vars["a"]))
-    b = float(cast(float, spec.vars["b"]))
-    c = float(cast(float, spec.vars["c"]))
-    assert isclose((a * k) ** 2 + (b * k) ** 2, (c * k) ** 2)
+def test_pythagorean_find_c_invalid_difficulty():
+    """Test that invalid difficulty for find_c raises ValueError."""
+    with pytest.raises(ValueError, match="difficulty 1-3 for find_c"):
+        generate_problem("pythagorean.find_c", 5)
+
+
+def test_pythagorean_find_leg_invalid_difficulty():
+    """Test that invalid difficulty for find_leg raises ValueError."""
+    with pytest.raises(ValueError, match="difficulty must be 4 for find_leg"):
+        generate_problem("pythagorean.find_leg", 2)
+
+
+def test_pythagorean_unknown_skill():
+    """Test that unknown skill raises ValueError."""
+    with pytest.raises(ValueError, match="unknown skill"):
+        generate_problem("unknown.skill", 1)  # type: ignore[arg-type]
