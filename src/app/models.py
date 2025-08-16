@@ -14,6 +14,8 @@ from sqlalchemy import (
     Numeric,
     String,
     Boolean,
+    Float,
+    func,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -106,3 +108,63 @@ class UserStub(Base):
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String)
+
+
+class Participant(Base):
+    __tablename__ = "participants"
+
+    participant_id: Mapped[str] = mapped_column(String, primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    age_band: Mapped[str | None] = mapped_column(String, nullable=True)
+    interests: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
+
+
+class Session(Base):
+    __tablename__ = "sessions"
+
+    session_id: Mapped[str] = mapped_column(String, primary_key=True)
+    participant_id: Mapped[str] = mapped_column(
+        String, ForeignKey("participants.participant_id")
+    )
+    skill: Mapped[str] = mapped_column(String, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    completed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    post_quiz: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
+
+
+class Item(Base):
+    __tablename__ = "items"
+
+    item_id: Mapped[str] = mapped_column(String, primary_key=True)
+    session_id: Mapped[str] = mapped_column(String, ForeignKey("sessions.session_id"))
+    problem_spec: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
+    context_id: Mapped[str] = mapped_column(String, nullable=False)
+    variant: Mapped[str] = mapped_column(String, nullable=False)
+    motif: Mapped[str | None] = mapped_column(String, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+
+
+class Attempt(Base):
+    __tablename__ = "attempts"
+
+    attempt_id: Mapped[str] = mapped_column(String, primary_key=True)
+    item_id: Mapped[str] = mapped_column(String, ForeignKey("items.item_id"))
+    shown_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    submitted_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    answer_submitted: Mapped[float | None] = mapped_column(Float, nullable=True)
+    first_try_correct: Mapped[bool] = mapped_column(Boolean, default=False)
+    time_to_first_try_ms: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    hints_used: Mapped[int] = mapped_column(Integer, default=0)
+    retries: Mapped[int] = mapped_column(Integer, default=0)

@@ -1,0 +1,10 @@
+id: space_vectors_v1
+grade_band: 7-9
+sentences_max: 2
+allowed_units: [meters, feet]
+stem: "A probe moves {a} {units} along one axis and {b} {units} along another at right angles in space. What's the straight-line displacement?"
+question: "Compute c, the direct distance traveled."
+placeholders: [a, b, c, units]
+forbidden_terms: []
+notes:
+  - "Keep descriptions scientific and neutral."
