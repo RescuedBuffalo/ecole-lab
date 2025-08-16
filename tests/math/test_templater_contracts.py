@@ -42,24 +42,48 @@ def test_invalid_units_fallback() -> None:
 
 def test_templater_error_missing_placeholder():
     """Test error when template requires placeholder not in spec."""
-    # Create a spec missing expected variables
+    from unittest.mock import patch
+    from src.app.math.templater import _load_template
+
     spec = ProblemSpec(
         id="test",
         skill="pythagorean.find_c",
         difficulty=1,
-        vars={"a": 3},  # missing 'b' and 'c'
+        vars={"a": 3, "b": 4, "c": 5},  # All required vars present
         solution={"answer": 5},
     )
 
-    with pytest.raises(KeyError):  # Template will fail to format with missing vars
-        render_context("neutral_v1", spec, "neutral", "meters")
+    # Mock a template that requires an extra placeholder not in the spec
+    mock_template = {
+        "stem": "Simple stem with {a}",
+        "question": "What is the answer?",
+        "allowed_units": ["meters"],
+        "sentences_max": 2,
+        "placeholders": ["a", "b", "c", "units", "missing_var"],  # Extra placeholder
+    }
+
+    with patch("src.app.math.templater._load_template", return_value=mock_template):
+        with pytest.raises(ValueError, match="missing placeholder missing_var"):
+            render_context("mock_template", spec, "neutral", "meters")
 
 
 def test_templater_sentence_limit_exceeded():
-    """Test error when stem exceeds sentence limit."""
-    # This would require a template that has a low sentence limit
-    # and a way to generate content that exceeds it
+    """Test sentence limit validation by creating a mock template."""
+    from unittest.mock import patch
+    from src.app.math.templater import _load_template
+
     spec = generate_problem("pythagorean.find_c", 1)
-    # For now, just test that the function works normally
-    ctx = render_context("neutral_v1", spec, "neutral", "meters")
-    assert ctx.stem  # Should render successfully
+
+    # Mock a template with a very low sentence limit
+    mock_template = {
+        "stem": "This is sentence one. This is sentence two. This is sentence three.",
+        "question": "What is the answer?",
+        "allowed_units": ["meters"],
+        "sentences_max": 1,  # Very low limit
+        "placeholders": ["a", "b", "c", "units"],
+    }
+
+    with patch.object(_load_template, "__defaults__", None):
+        with patch("src.app.math.templater._load_template", return_value=mock_template):
+            with pytest.raises(ValueError, match="stem exceeds sentence limit"):
+                render_context("mock_template", spec, "neutral", "meters")
