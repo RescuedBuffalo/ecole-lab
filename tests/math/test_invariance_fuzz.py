@@ -15,11 +15,11 @@ def test_invariance_correct_spec() -> None:
 def test_invariance_invalid_vars_type():
     """Test that invalid variable types return False."""
     spec = ProblemSpec(
-        id="test", 
-        skill="pythagorean.find_c", 
+        id="test",
+        skill="pythagorean.find_c",
         difficulty=1,
         vars={"a": "invalid", "b": 4, "c": 5},  # string where float expected
-        solution={"answer": 5}
+        solution={"answer": 5},
     )
     assert check_invariance(spec, "dummy_stem") is False
 
@@ -27,10 +27,10 @@ def test_invariance_invalid_vars_type():
 def test_invariance_missing_vars():
     """Test that missing variables return False."""
     spec = ProblemSpec(
-        id="test", 
-        skill="pythagorean.find_c", 
+        id="test",
+        skill="pythagorean.find_c",
         difficulty=1,
         vars={"a": "invalid"},  # invalid type for conversion to float
-        solution={"answer": 5}
+        solution={"answer": 5},
     )
     assert check_invariance(spec, "dummy_stem") is False

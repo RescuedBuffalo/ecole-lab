@@ -48,9 +48,9 @@ def test_templater_error_missing_placeholder():
         skill="pythagorean.find_c",
         difficulty=1,
         vars={"a": 3},  # missing 'b' and 'c'
-        solution={"answer": 5}
+        solution={"answer": 5},
     )
-    
+
     with pytest.raises(KeyError):  # Template will fail to format with missing vars
         render_context("neutral_v1", spec, "neutral", "meters")
 
