@@ -6,7 +6,6 @@ from uuid import UUID
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from pathlib import Path
 
 from .config import get_settings
 from .deps import get_session
