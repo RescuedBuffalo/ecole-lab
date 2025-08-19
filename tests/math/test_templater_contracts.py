@@ -43,7 +43,6 @@ def test_invalid_units_fallback() -> None:
 def test_templater_error_missing_placeholder():
     """Test error when template requires placeholder not in spec."""
     from unittest.mock import patch
-    from src.app.math.templater import _load_template
 
     spec = ProblemSpec(
         id="test",

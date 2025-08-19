@@ -1,5 +1,4 @@
 import asyncio
-from typing import Dict, Any
 
 from httpx import AsyncClient
 from sqlalchemy import select
