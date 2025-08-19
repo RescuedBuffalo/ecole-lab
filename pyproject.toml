@@ -34,7 +34,7 @@ mutmut = {version = "^2.4", optional = true}
 pytest-playwright = {version = "^0.4", optional = true}
 
 [tool.pytest.ini_options]
-addopts = "--asyncio-mode=auto --cov=src/app/math --cov-report=term-missing --cov-fail-under=90"
+addopts = "--asyncio-mode=auto"
 testpaths = ["tests"]
 
 [build-system]

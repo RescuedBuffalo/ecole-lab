@@ -1,5 +1,3 @@
-import asyncio
-
 from httpx import AsyncClient
 from sqlalchemy import select
 
@@ -349,55 +347,6 @@ async def test_session_completion_flow(app):
             assert len(attempts) == 2
 
 
-# Test functions that need to be called with asyncio.run()
-def test_create_participant_sync(app):
-    asyncio.run(test_create_participant(app))
-
-
-def test_create_session_default_params_sync(app):
-    asyncio.run(test_create_session_default_params(app))
-
-
-def test_create_session_custom_params_sync(app):
-    asyncio.run(test_create_session_custom_params(app))
-
-
-def test_get_next_item_sync(app):
-    asyncio.run(test_get_next_item(app))
-
-
-def test_get_next_item_nonexistent_session_sync(app):
-    asyncio.run(test_get_next_item_nonexistent_session(app))
-
-
-def test_log_attempt_success_sync(app):
-    asyncio.run(test_log_attempt_success(app))
-
-
-def test_log_attempt_incorrect_sync(app):
-    asyncio.run(test_log_attempt_incorrect(app))
-
-
-def test_log_attempt_nonexistent_item_sync(app):
-    asyncio.run(test_log_attempt_nonexistent_item(app))
-
-
-def test_post_quiz_sync(app):
-    asyncio.run(test_post_quiz(app))
-
-
-def test_post_quiz_nonexistent_session_sync(app):
-    asyncio.run(test_post_quiz_nonexistent_session(app))
-
-
-def test_log_attempt_duplicate_submission_sync(app):
-    asyncio.run(test_log_attempt_duplicate_submission(app))
-
-
-def test_session_completion_flow_sync(app):
-    asyncio.run(test_session_completion_flow(app))
-
-
 async def test_next_item_claim_false(app):
     """Test _next_item with claim=False to cover that path."""
     async with AsyncClient(app=app, base_url="http://test") as client:
@@ -512,15 +461,3 @@ async def test_log_attempt_with_existing_submission(app):
         # This should return the original attempt's correctness
         result2 = response2.json()
         assert "correct" in result2
-
-
-def test_next_item_claim_false_sync(app):
-    asyncio.run(test_next_item_claim_false(app))
-
-
-def test_session_completion_marks_completed_sync(app):
-    asyncio.run(test_session_completion_marks_completed(app))
-
-
-def test_log_attempt_with_existing_submission_sync(app):
-    asyncio.run(test_log_attempt_with_existing_submission(app))
