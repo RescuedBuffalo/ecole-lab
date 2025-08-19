@@ -1,0 +1,10 @@
+id: nature_trail_v1
+grade_band: 7-9
+sentences_max: 2
+allowed_units: [meters, feet]
+stem: "A hiker walks {a} {units} north then {b} {units} east on a right-angled trail. How far is she from the start?"
+question: "Find c, the straight path back."
+placeholders: [a, b, c, units]
+forbidden_terms: []
+notes:
+  - "Use general nature terms only."

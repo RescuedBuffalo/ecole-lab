@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome</title>
+</head>
+<body>
+  <h1>Research mode</h1>
+  <form id="welcome-form">
+    <label><input type="checkbox" id="consent" required /> I consent</label><br />
+    <div id="interests">
+      <button type="button" data-val="Sports">Sports</button>
+      <button type="button" data-val="Games">Games</button>
+      <button type="button" data-val="Music">Music</button>
+      <button type="button" data-val="Nature">Nature</button>
+      <button type="button" data-val="Space">Space</button>
+      <button type="button" data-val="Cooking">Cooking</button>
+      <button type="button" data-val="Pets">Pets</button>
+    </div>
+    <input type="hidden" id="interest-input" name="interests" />
+    <button type="submit">Start</button>
+  </form>
+  <script>
+    const chips=document.querySelectorAll('#interests button');
+    const selected=[]; chips.forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.val;if(!selected.includes(v)){selected.push(v);b.disabled=true;}document.getElementById('interest-input').value=JSON.stringify(selected);}));
+    document.getElementById('welcome-form').addEventListener('submit',async (e)=>{
+      e.preventDefault();
+      const resp=await fetch('/math/participants',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({interests:selected})});
+      const data=await resp.json();
+      const sess=await fetch('/math/sessions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({participant_id:data.participant_id,skill:'pythagorean.find_c',n_pairs:5,motif:selected[0]||'neutral'})});
+      const s=await sess.json();
+      window.location.href=`/m/session/${s.session_id}`;
+    });
+  </script>
+</body>
+</html>

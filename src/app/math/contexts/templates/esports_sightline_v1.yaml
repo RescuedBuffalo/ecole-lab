@@ -1,0 +1,10 @@
+id: esports_sightline_v1
+grade_band: 7-9
+sentences_max: 2
+allowed_units: [meters, feet]
+stem: "In an arena, a player spots a target {a} {units} forward and {b} {units} to the side at right angles. How far is the sightline?"
+question: "Calculate the distance c between player and target."
+placeholders: [a, b, c, units]
+forbidden_terms: []
+notes:
+  - "Keep descriptions general; no specific game titles."

@@ -1,0 +1,10 @@
+id: pets_backyard_v1
+grade_band: 7-9
+sentences_max: 2
+allowed_units: [meters, feet]
+stem: "A dog runs {a} {units} along a fence then {b} {units} to a tree at a right angle. How long is the leash needed to reach straight across?"
+question: "Find c, the direct leash length."
+placeholders: [a, b, c, units]
+forbidden_terms: []
+notes:
+  - "Keep animal references friendly and simple."

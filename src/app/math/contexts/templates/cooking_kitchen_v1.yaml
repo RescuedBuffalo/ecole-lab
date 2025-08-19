@@ -1,0 +1,10 @@
+id: cooking_kitchen_v1
+grade_band: 7-9
+sentences_max: 2
+allowed_units: [meters, feet]
+stem: "In a kitchen, a chef places bowls {a} {units} apart and a cutting board {b} {units} forward forming a right angle. How long is the countertop run between them?"
+question: "Work out c, the straight distance joining bowl and board."
+placeholders: [a, b, c, units]
+forbidden_terms: []
+notes:
+  - "Avoid brand names; keep it culinary."
